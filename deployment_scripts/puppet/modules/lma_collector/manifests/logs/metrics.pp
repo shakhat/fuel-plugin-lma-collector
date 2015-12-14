@@ -22,4 +22,11 @@ class lma_collector::logs::metrics {
     message_matcher => 'Type == \'log\' && Fields[http_response_time] != NIL',
     notify          => Class['lma_collector::service'],
   }
+
+  heka::filter::sandbox { 'mq_metrics':
+    config_dir      => $lma_collector::params::config_dir,
+    filename        => "${lma_collector::params::plugins_dir}/filters/mq_metrics.lua",
+    message_matcher => 'Type == \'log\'',
+    notify          => Class['lma_collector::service'],
+  }
 }
